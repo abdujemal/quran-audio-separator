@@ -15,9 +15,13 @@ function AudioPlayer() {
   const [error, setError] = useState(null);
   const [audio, setAudio] = useState("");
   const [title, setTitle] = useState("");
-  const [no, setNo] = useState(0)
+  const [surah, setSurah] = useState(-1);
+
+  const [no, setNo] = useState(-1)
   const [ayats, setAyats] = useState([])
   const [versesCount, setVersesCount] = useState(0)
+  const [surahs, setSurahs] = useState([])
+  const [audios, setAudios] = useState([])
 
   // Update current time when audio is playing
   useEffect(() => {
@@ -36,7 +40,7 @@ function AudioPlayer() {
 
     audio.addEventListener('timeupdate', updateCurrentTime);
     
-    getAudio()
+    getSurahs()
 
     // Clean up the event listener when the component unmounts
     return () => {
@@ -64,11 +68,11 @@ function AudioPlayer() {
     setCurrentTime(0);
   };
 
-  const getAudio = () => {
+  const getSurahs = () => {
     
-    setLoading(true);
-    setError("")
-    setAyats([])
+    // setLoading(true);
+    // setError("")
+    // setAyats([])
     fetch('/tefsir.json') // This path is relative to the public folder
       .then((response) => {
         if (!response.ok) {
@@ -78,62 +82,49 @@ function AudioPlayer() {
       })
       .then(async (jsonData) => {
         
+        setSurahs(jsonData.slice(77,114))
+
         // Math.floor(Math.random() * (max - min + 1)) + min
 
-        let surano;
-        let audiono;
-        for(;;){           
-          
-          surano =  Math.floor(Math.random() * 114)
-          audiono = Math.floor(Math.random() * jsonData[surano].courseIds.split(",").length)
-          
-          // console.log(`attempt ${surano+1}`);
-          // const key = `${jsonData[surano].title}` // audioNo
+        // let surano;
+        // let audiono;
+        // for(;;){          
+        //   surano =  Math.floor(Math.random() * 114)
+        //   audiono = Math.floor(Math.random() * jsonData[surano].courseIds.split(",").length)         
+        //   // console.log(`attempt ${surano+1}`);
+        //   // const key = `${jsonData[surano].title}` // audioNo
+        //   try{
+        //     console.log("attempt surah", jsonData[surano].title);
+        //     console.log("attempt audio no", audiono+1);           
+        //     const qu = query(collection(db, "Ayats"),where("surah","==", jsonData[surano].title),where("audioNo","==",`${audiono+1}`))  
+        //     const ag  = await getCountFromServer(qu)
+        //     console.log("attempt count", ag.data().count);            
+        //     if(ag.data().count === 0){              
+        //       break
+        //     }
+        //   }catch(e){
+        //     console.log(e);
+        //   }
+        // }
 
-          try{
-
-            console.log("attempt surah", jsonData[surano].title);
-            console.log("attempt audio no", audiono+1);
-            
-
-            
-            const qu = query(collection(db, "Ayats"),where("surah","==", jsonData[surano].title),where("audioNo","==",`${audiono+1}`))
-  
-            const ag  = await getCountFromServer(qu)
-            console.log("attempt count", ag.data().count);
-            
-            if(ag.data().count === 0){
-              
-              break
-            }
-          }catch(e){
-            console.log(e);
-
-          }
-
-
-        }
-
-
-
-        fetch(`https://api.quran.com/api/v4/chapters/${surano+1}`).then((response)=>{
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
-          response.json().then((e)=>{
-            setVersesCount(Number(e.chapter.verses_count))
-            console.log(e.chapter.verses_count);
-          })
-        })
-        setAudio(jsonData[surano].courseIds.split(",")[audiono])
+        // fetch(`https://api.quran.com/api/v4/chapters/${surano+1}`).then((response)=>{
+        //   if (!response.ok) {
+        //     throw new Error('Network response was not ok');
+        //   }
+        //   response.json().then((e)=>{
+        //     setVersesCount(Number(e.chapter.verses_count))
+        //     console.log(e.chapter.verses_count);
+        //   })
+        // })
+        // setAudio(jsonData[surano].courseIds.split(",")[audiono])
+        // setTitle(jsonData[surano].title)
+        // setNo(audiono + 1)
         console.log(jsonData[surano].courseIds.split(",")[audiono]);
-        setTitle(jsonData[surano].title)
-        setNo(audiono + 1)
-        setLoading(false);
+        // setLoading(false);
       })
       .catch((err) => {
         setError(err)
-        setLoading(false);
+        // setLoading(false);
       });
   }
 
@@ -141,19 +132,6 @@ function AudioPlayer() {
   const seekAudio = (newTime) => {
     audioRef.current.currentTime = newTime;
     setCurrentTime(newTime);
-  };
-
-  // Function to handle volume change
-  const handleVolumeChange = (event) => {
-    const newVolume = event.target.value;
-    audioRef.current.volume = newVolume;
-    setVolume(newVolume);
-  };
-
-  // Function to handle progress bar change
-  const handleProgressBarChange = (event) => {
-    const newTime = event.target.value;
-    seekAudio(newTime);
   };
 
   const addAya = ()=>{
@@ -183,7 +161,13 @@ function AudioPlayer() {
       }
   
       alert("Successfully added")
-      getAudio()
+      setAyats([])
+      setSurah(-1)
+      setTitle("")
+      setAudios("")
+      setNo(-1)
+      setAudio("")
+      alert("This Audio has been done")
       setLoading(false)
     }    
     catch(e){
@@ -199,15 +183,76 @@ function AudioPlayer() {
   // if (error) {
   //   return <div>Error: {error}</div>;
   // }
+  const handleSurahChange = (event) => {
+    setSurah(event.target.value)
+    setTitle(surahs[event.target.value].title)
+    setAudios(surahs[event.target.value].courseIds.split(","))
+    setNo(-1)
+    setAudio("")
+    
+    // console.log(event.target.value.title);
+  };
+
+  const handleAudioChange = (event) => {
+    setNo(event.target.value)
+    setAudio(surahs[event.target.value].courseIds.split(",")[event.target.value -1])
+
+    checkValidity(event.target.value)
+  }
+
+  const checkValidity = async (no) => {
+    try{
+      console.log("attempt surah", surahs[surah].title);
+      console.log("attempt audio no", no);           
+      const qu = query(collection(db, "Ayats"),where("surah","==", surahs[surah].title),where("audioNo","==",`${no}`))  
+      const ag  = await getCountFromServer(qu)
+      console.log("attempt count", ag.data().count);            
+      if(ag.data().count === 0){              
+        
+      }else{
+        setSurah(-1)
+        setTitle("")
+        setAudios("")
+        setNo(-1)
+        setAudio("")
+        alert("This Audio has been done")
+      }
+    }catch(e){
+      console.log(e);
+    }
+  }
+
 
   return (
     <div className='mt-10 flex flex-col items-center'>
-      {/* The audio element */}
+      <div className='mt-10 mb-10 flex gap-2'>
+        <select value={surah} onChange={handleSurahChange}>
+          <option value={-1} key={0}>Select Surah</option>
+          {
+            surahs.map((e,i)=>
+            <option value={i} key={i+1}>{e.title}</option>
+            )
+          }
+        </select>
+
+        {
+          surah == -1 ?
+          <div></div>:
+          <select value={no} onChange={handleAudioChange}>
+            <option value={-1} key={0}>Select Audio</option>
+            {
+              audios.map((e,i)=>
+              <option value={i+1} key={i+1}>{i+1} Audio</option>
+              )
+            }
+          </select>
+        }
+      </div>
       {
         loading ? <p>Loading</p> : <p></p>
       }
       <h2 className='text-3xl'>{title}</h2>
-      <p>{no}th Audio</p>
+      {no !== -1 ? <p>{no}th Audio</p> : <div></div>}
       <audio className=' self-center' controls ref={audioRef} src={audio} />
 
       <div style={{
