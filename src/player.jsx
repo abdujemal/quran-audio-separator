@@ -195,7 +195,7 @@ function AudioPlayer() {
 
   const handleAudioChange = (event) => {
     setNo(event.target.value)
-    setAudio(surahs[event.target.value].courseIds.split(",")[event.target.value -1])
+    setAudio(surahs[surah].courseIds.split(",")[event.target.value -1])
 
     checkValidity(event.target.value)
   }
