@@ -4,7 +4,7 @@ import viteLogo from '/vite.svg'
 import './App.css'
 import AudioPlayer from './player'
 import './index.css';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes,  } from 'react-router-dom';
 import Evaluate from './evaluate'
 
 function App() {
@@ -16,7 +16,7 @@ function App() {
         <Route path="/" element={<AudioPlayer/>} />
         <Route path="/evaluate" element={<Evaluate />} />
       </Routes>
-  </Router>
+    </Router>
     // <>
     //   <div>
     //     <a href="https://vite.dev" target="_blank">
