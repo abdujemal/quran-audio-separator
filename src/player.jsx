@@ -224,8 +224,8 @@ function AudioPlayer() {
 
 
   return (
-    <div className='mt-10 flex flex-col items-center max-h-screen'>
-      <div className='mt-10 mb-10 flex gap-2'>
+    <div className='mt-2 flex flex-col items-center max-h-screen'>
+      <div className='mt-5 mb-10 flex gap-2'>
         <select value={surah} onChange={handleSurahChange}>
           <option value={-1} key={0}>Select Surah</option>
           {
@@ -269,7 +269,7 @@ function AudioPlayer() {
        
         <button className='bg-slate-300 text-black' onClick={()=>{seekAudio(audioRef.current.currentTime + 5);}}>+5 sec</button>
       </div>
-      <div className='flex-1 overflow-y-auto'>
+      <div className='flex-1'>
         {
           ayats.map((e, i)=>
           <div key={i} className='flex mt-2 gap-1 items-center'>
