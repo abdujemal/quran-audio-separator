@@ -275,7 +275,7 @@ function AudioPlayer() {
           <div key={i} className='flex mt-2 gap-1 items-center'>
             <p onClick={()=>{seekAudio(Number(e.start))}}>Jump</p>
             <div className='flex flex-col'>
-              <input placeholder='Start' value={e.start ?? 0} className='w-24 border border-black p-2' type='number' onChange={(e)=>{updateData({...e, start: Math.floor(Number(e.target.value))}, i)}}/>
+              <input placeholder='Start' value={e.start ?? 0} className='w-16 border border-black p-2' type='number' onChange={(e)=>{updateData({...e, start: Math.floor(Number(e.target.value))}, i)}}/>
               <button 
                 onClick={()=>updateData({...e, start: Math.floor(audioRef.current.currentTime)}, i)}  
                 className='text-sm bg-green-200 text-black'>pick
@@ -285,7 +285,7 @@ function AudioPlayer() {
             }}/>
             {/* <p> {e.end === "" ? "End" : e.end}</p> */}
             <div className='flex flex-col'>
-              <input placeholder='End' value={e.end ?? 0} className='w-24 border border-black p-2' type='number' onChange={(e)=>{updateData({...e, end: Math.floor(Number(e.target.value))}, i)}}/>
+              <input placeholder='End' value={e.end ?? 0} className='w-16 border border-black p-2' type='number' onChange={(e)=>{updateData({...e, end: Math.floor(Number(e.target.value))}, i)}}/>
               <button 
                 onClick={()=>updateData({...e, end: Math.floor(audioRef.current.currentTime)}, i)}  
                 className='text-sm bg-green-200 text-black'>pick
