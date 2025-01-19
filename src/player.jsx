@@ -274,19 +274,23 @@ function AudioPlayer() {
           ayats.map((e, i)=>
           <div key={i} className='flex mt-2 gap-1 items-center'>
             <p onClick={()=>{seekAudio(Number(e.start))}}>Jump</p>
-            <input placeholder='Start' value={e.start ?? 0} className='w-24 border border-black p-2' type='number' onChange={(e)=>{updateData({...e, start: Math.floor(Number(e.target.value))}, i)}}/>
-            <button 
-              onClick={()=>updateData({...e, start: Math.floor(audioRef.current.currentTime)}, i)}  
-              className='text-sm bg-green-200 text-black'>pick
-            </button>
+            <div className='flex flex-col'>
+              <input placeholder='Start' value={e.start ?? 0} className='w-24 border border-black p-2' type='number' onChange={(e)=>{updateData({...e, start: Math.floor(Number(e.target.value))}, i)}}/>
+              <button 
+                onClick={()=>updateData({...e, start: Math.floor(audioRef.current.currentTime)}, i)}  
+                className='text-sm bg-green-200 text-black'>pick
+              </button>
+            </div>
             <input type="number" value={e.ayaName} className='w-12 border border-black p-2'  name="ayaNo" placeholder='Aya' id="ayaNo" onChange={(ev)=>{updateData({...e,ayaName: ev.target.value }, i);
             }}/>
             {/* <p> {e.end === "" ? "End" : e.end}</p> */}
-            <input placeholder='End' value={e.end ?? 0} className='w-24 border border-black p-2' type='number' onChange={(e)=>{updateData({...e, end: Math.floor(Number(e.target.value))}, i)}}/>
-            <button 
-              onClick={()=>updateData({...e, end: Math.floor(audioRef.current.currentTime)}, i)}  
-              className='text-sm bg-green-200 text-black'>pick
-            </button>
+            <div className='flex flex-col'>
+              <input placeholder='End' value={e.end ?? 0} className='w-24 border border-black p-2' type='number' onChange={(e)=>{updateData({...e, end: Math.floor(Number(e.target.value))}, i)}}/>
+              <button 
+                onClick={()=>updateData({...e, end: Math.floor(audioRef.current.currentTime)}, i)}  
+                className='text-sm bg-green-200 text-black'>pick
+              </button>
+            </div>
             <button onClick={()=>deleteItem(i)} className='text-sm bg-red-300'>Delete</button>
           </div>
         )
