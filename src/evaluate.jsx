@@ -1,4 +1,4 @@
-import { collection, getDocs, query, where } from 'firebase/firestore'
+import { collection, getDocs, query, where, deleteDoc} from 'firebase/firestore'
 import React, { useEffect, useRef, useState } from 'react'
 import { db } from './firebase'
 
@@ -77,6 +77,23 @@ const Evaluate = () => {
         setLoading(false)        
     }
    }
+
+//    const deleteAyat = ()=>{
+//         try{
+//             setLoading(true)
+//             setAyats([])
+            
+//             const qu = query(collection(db, "Ayats"),where("surah","==", selectedSura.title),where("audioNo","==",`${audioNo+1}`))
+//             const qs = await getDocs(qu)
+//             setAyats(qs.docs.map((e)=>e.data()))
+//             console.log(qs.docs.length);
+            
+//             setLoading(false)
+//         }catch(e){
+//             console.log(e);
+//             setLoading(false)        
+//         }
+//    }
 
     const handleSurahChange = (e) =>{
         setSurah(Number(e.target.value))

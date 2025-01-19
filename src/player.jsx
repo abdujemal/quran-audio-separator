@@ -261,37 +261,39 @@ function AudioPlayer() {
         gap: "5px", 
         justifyContent: "center", 
        }}>
-        <button className='bg-slate-300' onClick={()=>{seekAudio(audioRef.current.currentTime - 5);}}>-5 sec</button>
+        <button className='bg-slate-300 text-black' onClick={()=>{seekAudio(audioRef.current.currentTime - 5);}}>-5 sec</button>
        
-        <button className='bg-slate-300' onClick={()=>{seekAudio(audioRef.current.currentTime - 3);}}>-3 sec</button>
+        <button className='bg-slate-300 text-black' onClick={()=>{seekAudio(audioRef.current.currentTime - 3);}}>-3 sec</button>
 
-        <button className='bg-slate-300' onClick={()=>{seekAudio(audioRef.current.currentTime + 3);}}>+3 sec</button>
+        <button className='bg-slate-300 text-black' onClick={()=>{seekAudio(audioRef.current.currentTime + 3);}}>+3 sec</button>
        
-        <button className='bg-slate-300' onClick={()=>{seekAudio(audioRef.current.currentTime + 5);}}>+5 sec</button>
+        <button className='bg-slate-300 text-black' onClick={()=>{seekAudio(audioRef.current.currentTime + 5);}}>+5 sec</button>
       </div>
       <div className='flex-1 overflow-y-auto'>
         {
           ayats.map((e, i)=>
           <div key={i} className='flex mt-2 gap-1 items-center'>
-            <p onClick={()=>{seekAudio(Number(e.start))}}> {e.start === "" ? "Start" : e.start}</p>
+            <p onClick={()=>{seekAudio(Number(e.start))}}>Jump</p>
+            <input placeholder='Start' value={e.start ?? 0} className='w-24 border border-black p-2' type='number' onChange={(e)=>{updateData({...e, start: Math.floor(Number(e.target.value))}, i)}}/>
             <button 
               onClick={()=>updateData({...e, start: Math.floor(audioRef.current.currentTime)}, i)}  
-              className='text-sm bg-green-200'>pick
+              className='text-sm bg-green-200 text-black'>pick
             </button>
             <input type="number" value={e.ayaName} className='w-12 border border-black p-2'  name="ayaNo" placeholder='Aya' id="ayaNo" onChange={(ev)=>{updateData({...e,ayaName: ev.target.value }, i);
             }}/>
-            <p> {e.end === "" ? "End" : e.end}</p>
+            {/* <p> {e.end === "" ? "End" : e.end}</p> */}
+            <input placeholder='End' value={e.end ?? 0} className='w-24 border border-black p-2' type='number' onChange={(e)=>{updateData({...e, end: Math.floor(Number(e.target.value))}, i)}}/>
             <button 
               onClick={()=>updateData({...e, end: Math.floor(audioRef.current.currentTime)}, i)}  
-              className='text-sm bg-green-200'>pick
+              className='text-sm bg-green-200 text-black'>pick
             </button>
             <button onClick={()=>deleteItem(i)} className='text-sm bg-red-300'>Delete</button>
           </div>
         )
         }
       </div>
-    { loading ? <div></div> : <button className='bg-blue-50 w-20 mt-6' onClick={()=>{addAya()}}>Add</button>}
-    { loading ? <div></div> : <button className='bg-green-300 mt-10 w-32' onClick={()=>{saveData()}}>Save</button>}
+    { loading ? <div></div> : <button className='bg-blue-50 text-black w-20 mt-6' onClick={()=>{addAya()}}>Add</button>}
+    { loading ? <div></div> : <button className='bg-green-300 text-black mt-10 w-32' onClick={()=>{saveData()}}>Save</button>}
     </div>
   );
 }
